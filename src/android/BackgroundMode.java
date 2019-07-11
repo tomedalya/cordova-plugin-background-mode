@@ -270,6 +270,7 @@ public class BackgroundMode extends CordovaPlugin {
         isBind = false;
     }
 
+
     /**
      * Fire vent with some parameters inside the web view.
      *
