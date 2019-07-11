@@ -165,17 +165,21 @@ public class BackgroundModeExt extends CordovaPlugin {
             public void run() {
                 try {
                     Thread.sleep(1000);
-                    getApp().runOnUiThread(() -> {
-                        View view = webView.getEngine().getView();
+                    getApp().runOnUiThread(
+                            new Runnable() {
+                                @Override
+                                public void run() {
+                                    View view = webView.getEngine().getView();
 
-                        try {
-                            Class.forName("org.crosswalk.engine.XWalkCordovaView")
-                                 .getMethod("onShow")
-                                 .invoke(view);
-                        } catch (Exception e){
-                            view.dispatchWindowVisibilityChanged(View.VISIBLE);
-                        }
-                    });
+                                    try {
+                                        Class.forName("org.crosswalk.engine.XWalkCordovaView")
+                                             .getMethod("onShow")
+                                             .invoke(view);
+                                    } catch (Exception e){
+                                        view.dispatchWindowVisibilityChanged(View.VISIBLE);
+                                    }
+                                }
+                            });
                 } catch (InterruptedException e) {
                     // do nothing
                 }
@@ -254,7 +258,12 @@ public class BackgroundModeExt extends CordovaPlugin {
                     dialog.setMessage("missing text");
                 }
 
-                activity.runOnUiThread(dialog::show);
+                activity.runOnUiThread(new Runnable() {
+                                           @Override
+                                           public void run() {
+                                               dialog.show();
+                                           }
+                                       });
 
                 break;
             }
