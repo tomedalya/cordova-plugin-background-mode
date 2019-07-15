@@ -215,10 +215,10 @@ public class BackgroundModeExt extends CordovaPlugin {
      * @param arg Text and title for the dialog or false to skip the dialog.
      */
     private void openAppStart(Object arg) {
-        Activity activity = cordova.getActivity();
+       final Activity activity = cordova.getActivity();
         PackageManager pm = activity.getPackageManager();
 
-        for (Intent intent : getAppStartIntents()) {
+        for (final Intent intent : getAppStartIntents()) {
             if (pm.resolveActivity(intent, MATCH_DEFAULT_ONLY) != null) {
                 JSONObject spec = (arg instanceof JSONObject) ? (JSONObject) arg : null;
 
@@ -238,10 +238,10 @@ public class BackgroundModeExt extends CordovaPlugin {
                         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                
+
                             }
                         }).setMessage("Message");
-                AlertDialog dialog = builder.create();
+                final AlertDialog dialog = builder.create();
                 dialog.show();
 
                 dialog.setCancelable(true);
@@ -389,7 +389,7 @@ public class BackgroundModeExt extends CordovaPlugin {
     /**
      * Removes required flags to the window to unlock/wakeup the device.
      */
-    static void clearKeyguardFlags(Activity app) {
+    static void clearKeyguardFlags(final Activity app) {
         app.runOnUiThread(new Runnable() {
             @Override
             public void run() {
