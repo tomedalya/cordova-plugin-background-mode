@@ -27,6 +27,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.AppTask;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -228,25 +229,20 @@ public class BackgroundModeExt extends CordovaPlugin {
                     break;
                 }
 
-                AlertDialog.Builder dialog = new AlertDialog.Builder(activity, Theme_DeviceDefault_Light_Dialog);
-
-                dialog.setButton(Dialog.BUTTON_POSITIVE, "Ok",
-                        new DialogInterface.OnClickListener() {
-
+                AlertDialog.Builder builder =  new AlertDialog.Builder(activity)
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                            public void onClick(DialogInterface dialogInterface, int i) {
                                 activity.startActivity(intent);
                             }
-                        });
-
-                dialog.setButton(Dialog.BUTTON_NEGATIVE, "Cancel",
-                        new DialogInterface.OnClickListener() {
-
+                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                
                             }
-                        });
+                        }).setMessage("Message");
+                AlertDialog dialog = builder.create();
+                dialog.show();
 
                 dialog.setCancelable(true);
 
@@ -370,7 +366,7 @@ public class BackgroundModeExt extends CordovaPlugin {
      * Adds required flags to the window to unlock/wakeup the device.
      */
     private void addSreenAndKeyguardFlags() {
-        getApp().runOnUiThread().runOnUiThread(new Runnable() {
+        getApp().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 getApp().getWindow().addFlags(FLAG_ALLOW_LOCK_WHILE_SCREEN_ON | FLAG_SHOW_WHEN_LOCKED | FLAG_TURN_SCREEN_ON | FLAG_DISMISS_KEYGUARD);
@@ -382,7 +378,7 @@ public class BackgroundModeExt extends CordovaPlugin {
      * Clears required flags to the window to unlock/wakeup the device.
      */
     private void clearScreenAndKeyguardFlags() {
-        getApp().runOnUiThread().runOnUiThread(new Runnable() {
+        getApp().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 getApp().getWindow().clearFlags(FLAG_ALLOW_LOCK_WHILE_SCREEN_ON | FLAG_SHOW_WHEN_LOCKED | FLAG_TURN_SCREEN_ON | FLAG_DISMISS_KEYGUARD);
@@ -394,7 +390,7 @@ public class BackgroundModeExt extends CordovaPlugin {
      * Removes required flags to the window to unlock/wakeup the device.
      */
     static void clearKeyguardFlags(Activity app) {
-        app.runOnUiThread().runOnUiThread(new Runnable() {
+        app.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 app.getWindow().clearFlags(FLAG_DISMISS_KEYGUARD);
